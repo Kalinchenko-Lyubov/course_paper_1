@@ -1,5 +1,5 @@
 [project]
-name = "pythonproject1"
+name = "course_paper_1"
 version = "0.1.0"
 description = ""
 authors = [
@@ -7,7 +7,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["requests (>=2.32.5,<3.0.0)", "load-dotenv (>=0.1.0,<0.2.0)", "logging (>=0.4.9.6,<0.5.0.0)", "pandas (>=3.0.1,<4.0.0)"]
+dependencies = ["requests (>=2.32.5,<3.0.0)", "load-dotenv (>=0.1.0,<0.2.0)", "logging (>=0.4.9.6,<0.5.0.0)", "pandas (>=3.0.1,<4.0.0)", "openpyxl (>=3.1.5,<4.0.0)"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -22,7 +22,7 @@ lint = [
 ]
 test = [
     "pytest (>=9.0.2,<10.0.0)",
-    "pytest-cov (>=7.0.0,<8.0.0)"
+    "pytest-cov (>=7.0.0)"
 ]
 
 [tool.flake8]
