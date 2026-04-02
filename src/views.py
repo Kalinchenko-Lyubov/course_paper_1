@@ -2,6 +2,7 @@ import logging
 from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List
+
 from src.services import get_currency_rates, get_stock_prices
 from src.utils import load_user_settings
 

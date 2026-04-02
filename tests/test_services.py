@@ -1,6 +1,8 @@
 from unittest.mock import MagicMock, patch
 
-from src.services import get_currency_rates, get_stock_prices
+import pytest
+
+from src.services import get_currency_rates, get_stock_prices, investment_bank
 
 
 def test_get_currency_rates():
@@ -55,7 +57,37 @@ def test_get_stock_prices(mock_requests_get):
 def test_get_currency_rates_bad_status(mock_requests_get):
     mock_response = MagicMock(status_code=404, text="Not Found")
     mock_requests_get.return_value = mock_response
-
     rates = get_currency_rates()
-
     assert rates == []
+
+
+def test_investment_bank_limit_100():
+    transactions = [
+        {"Дата операции": "2023-05-01", "Сумма операции": "1712"},
+        {"Дата операции": "2023-05-15", "Сумма операции": "2345"},
+    ]
+    saved_amount = investment_bank("2023-05", transactions, 100)
+    assert saved_amount == pytest.approx(143.0)
+
+
+def test_investment_bank_invalid_limit():
+    transactions = [
+        {"Дата операции": "2023-05-01", "Сумма операции": "1712"},
+        {"Дата операции": "2023-05-15", "Сумма операции": "2345"},
+    ]
+    with pytest.raises(ValueError, match="Порог округления должен быть 10, 50 или 100 ₽"):
+        investment_bank("2023-05", transactions, 25)
+
+
+def test_investment_bank_no_transactions():
+    saved_amount = investment_bank("2023-05", [], 50)
+    assert saved_amount == 0.0
+
+
+def test_investment_bank_outside_month():
+    transactions = [
+        {"Дата операции": "2023-04-01", "Сумма операции": "1712"},
+        {"Дата операции": "2023-06-15", "Сумма операции": "2345"},
+    ]
+    saved_amount = investment_bank("2023-05", transactions, 50)
+    assert saved_amount == 0.0
