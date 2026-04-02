@@ -1,35 +1,39 @@
+import json
+import logging
+from pathlib import Path
+from typing import Dict, List
+
 import pandas as pd
-from typing import Any, Hashable, Optional, List, Dict
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-def read_transactions_from_excel(file_path: str) -> Optional[List[Dict[Hashable, Any]]]:
+def read_transactions_from_excel(file_path: str) -> List[Dict]:
     """
     Читает данные из Excel-файла и возвращает список словарей с транзакциями.
-
-    :param file_path: Путь к Excel-файлу
-    :return: Список словарей с транзакциями или None в случае ошибки
     """
+    # Определяем путь относительно корня проекта
+    project_root = Path(__file__).resolve().parents[1]  # Поднимаемся на 2 уровня вверх
+    full_path = project_root / file_path
+
+    logger.info(f"Попытка прочитать файл: {full_path}")
     try:
-        # Читаем Excel-файл с помощью pandas
-        df = pd.read_excel(file_path)
-
-        # Преобразуем DataFrame в список словарей
-        transactions = df.to_dict(orient='records')
-
+        df = pd.read_excel(full_path)
+        transactions = df.to_dict(orient="records")
         return transactions
-
     except FileNotFoundError:
-        print(f"Файл {file_path} не найден.")
-        return None
+        logger.error(f"Файл {full_path} не найден.")
+        return []
 
-    except pd.errors.EmptyDataError:
-        print(f"В файле {file_path} нет данных.")
-        return None
 
-    except pd.errors.ParserError:
-        print(f"Ошибка при разборе файла {file_path}. Возможно, неверный формат.")
-        return None
+def load_user_settings() -> Dict:
+    """
+    Загружает пользовательские настройки из файла user_settings.json.
+    """
+    settings_path = Path(__file__).parent.parent / "user_settings.json"
 
-    except Exception as ex:
-        print(f"Общая ошибка: {ex}")
-        return None
+    with open(settings_path, "r") as file:
+        settings = json.load(file)
+
+    return settings
