@@ -4,8 +4,13 @@ import pytest
 from freezegun import freeze_time
 
 from src.utils import read_transactions_from_excel
-from src.views import (calculate_card_statistics, filter_transactions_by_date, generate_json_response, get_greeting,
-                       get_top_transactions)
+from src.views import (
+    calculate_card_statistics,
+    filter_transactions_by_date,
+    generate_json_response,
+    get_greeting,
+    get_top_transactions,
+)
 
 
 @pytest.mark.parametrize(
