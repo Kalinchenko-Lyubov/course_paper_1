@@ -13,8 +13,7 @@ def read_transactions_from_excel(file_path: str) -> List[Dict]:
     """
     Читает данные из Excel-файла и возвращает список словарей с транзакциями.
     """
-    # Определяем путь относительно корня проекта
-    project_root = Path(__file__).resolve().parents[1]  # Поднимаемся на 2 уровня вверх
+    project_root = Path(__file__).resolve().parents[1]
     full_path = project_root / file_path
 
     logger.info(f"Попытка прочитать файл: {full_path}")
